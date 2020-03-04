@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import { Button, Input } from '../Utils/Utils'
+import TokenService from '../../services/token-service'
+// import config from '../../config'
 
 export default class LoginForm extends Component {
   static defaultProps = {
-    onLoginSuccess: () => {}
+    onLoginSuccess: () => { }
   }
 
   state = { error: null }
@@ -14,6 +16,22 @@ export default class LoginForm extends Component {
 
     console.log('login form submitted')
     console.log({ user_name, password })
+
+    TokenService.saveAuthToken(
+      TokenService.makeBasicAuthToken(user_name.value, password.value)
+    )
+
+    // fetch(`${config.API_ENDPOINT}/things/`, {
+    //   headers: {
+    //     'authorization': `basic ${TokenService.makeBasicAuthToken(user_name.value, password.value)}`
+    //   },
+    // })
+    //   .then(res =>
+    //     (!res.ok)
+    //       ? res.json().then(e => Promise.reject(e))
+    //       : TokenService.saveAuthToken(TokenService.makeBasicAuthToken(user_name.value, password.value))
+    //   )
+
 
     user_name.value = ''
     password.value = ''
